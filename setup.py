@@ -30,6 +30,7 @@ setup(
         "matplotlib",
         "h5py",
         "opencv-python",
+        "tensorflow",
     ],
     classifiers=[
         "Development Status :: 4 - Beta",
