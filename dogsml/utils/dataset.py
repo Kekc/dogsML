@@ -12,8 +12,9 @@ __all__ = (
 )
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-IMG_FOLDER = "{0}/natural_images".format(PROJECT_ROOT)
-DATASET_FOLDER = "{0}/dogs_dataset".format(PROJECT_ROOT)
+DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
+IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
+DATASET_FOLDER = "{0}/dogs_dataset".format(DATA_ROOT)
 
 
 def prepare_dataset():
@@ -33,6 +34,8 @@ def prepare_dataset():
     dogs_count = 0
     non_dogs_count = 0
     for directory in os.listdir(IMG_FOLDER):
+        if directory.startswith("."):
+            continue
         is_dog = directory == "dog"
         for filename in os.listdir(os.path.join(IMG_FOLDER, directory)):
             image_path = os.path.join(IMG_FOLDER, directory, filename)

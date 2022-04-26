@@ -130,6 +130,4 @@ dmypy.json
 .pyre/
 
 # Dataset related files
-natural_images
-dog_breeds
-dogs_dataset
+data
