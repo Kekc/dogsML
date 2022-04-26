@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 
 
 def sigmoid(z):
@@ -57,3 +58,14 @@ def get_accuracy(x_test, y_test, w, b):
     y_pred = np.where(activation_function(x_test, w, b) > 0.5, 1, 0)
     accuracy_test = 100 - np.mean(np.abs(y_pred - y_test)) * 100
     return accuracy_test
+
+
+def one_hot_matrix(label, depth=6):
+    """
+    Computes the one hot encoding for a single label
+    :param label: int
+    :param depth: int Number of different classes that label can take
+    :return: tf.Tensor A single-column matrix with the one hot encoding
+    """
+    t1 = tf.one_hot(label, depth, axis=0)
+    return tf.reshape(t1, (depth,))
