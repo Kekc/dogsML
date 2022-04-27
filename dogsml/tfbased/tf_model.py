@@ -1,3 +1,5 @@
+import h5py
+import numpy as np
 import tensorflow as tf
 import tensorflow.keras.layers as tfl
 
@@ -7,8 +9,8 @@ import dogsml.utils
 def neural_net_model(
         x_train,
         y_train,
-        x_test,
-        y_test,
+        x_test=None,
+        y_test=None,
         num_epochs=100,
         batch_size=32,
 ):
@@ -27,7 +29,7 @@ def neural_net_model(
     """
 
     tf_model = tf.keras.Sequential([
-        tfl.InputLayer(input_shape=(x_train.shape[0])),
+        tfl.InputLayer(input_shape=(x_train.shape[1])),
         tfl.Dense(8, "relu"),
         tfl.Dense(4, "relu"),
         tfl.Dense(2, "relu"),
@@ -39,22 +41,33 @@ def neural_net_model(
         loss="binary_crossentropy",
         metrics=["binary_accuracy"],
     )
-    print("Model summary", tf_model.summary())
 
     tf_model.fit(
-        x_train.T,
-        y_train.T,
+        np.array(x_train),
+        np.array(y_train),
         epochs=num_epochs,
         batch_size=batch_size
     )
 
-    print("\n\nTest accuracy:")
-    tf_model.evaluate(x_test.T, y_test.T)
+    if x_test and y_test:
+        print("\n\nTest accuracy:")
+        tf_model.evaluate(x_test, y_test)
 
 
-if __name__ == '__main__':
-    x_dev, y_dev = dogsml.utils.dataset.prepare_images("train")
-    x_test, y_test = dogsml.utils.dataset.prepare_images("test")
+def run_model():
+    """
+    Service method to run neural net
+    :return: (None)
+    """
+    dataset = h5py.File(
+        "{0}/natural_images.hdf5".format(dogsml.utils.dataset.DATASET_FOLDER),
+        "r",
+    )
+    x_dev = dataset["x_dev"]
+    y_dev = dataset["y_dev"]
+    x_test = dataset["x_test"]
+    y_test = dataset["y_test"]
+
     neural_net_model(
         x_dev,
         y_dev,
@@ -63,3 +76,7 @@ if __name__ == '__main__':
         num_epochs=100,
         batch_size=32,
     )
+
+
+if __name__ == '__main__':
+    run_model()

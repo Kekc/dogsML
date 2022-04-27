@@ -5,6 +5,8 @@ import cv2
 
 
 __all__ = (
+    "PROJECT_ROOT",
+    "DATA_ROOT",
     "IMG_FOLDER",
     "DATASET_FOLDER",
     "prepare_dataset",
@@ -80,7 +82,7 @@ def prepare_dataset():
             writer.writerow([path, 0])
 
 
-def prepare_images(filename):
+def prepare_images(filename, width=64, height=64):
     """
     Parse csv file and prepare two numpy arrays:
     x - data
@@ -100,18 +102,18 @@ def prepare_images(filename):
         for image_path, value in reader:
             image_path = os.path.join(PROJECT_ROOT, image_path)
             img_arr = cv2.imread(image_path)
-            img_arr = cv2.resize(img_arr, (200, 200))
+            img_arr = cv2.resize(img_arr, (width, height))
             x_dev.append(img_arr)
             y_dev.append(int(value))
     x_dev = np.asarray(x_dev)
 
-    # x shape: (689, 200, 200, 3) (num examples, width, height, channels)
-    # y shape : (689,) (num examples)
+    # x shape: (num examples, width, height, channels)
+    # y shape: (num examples)
 
     y_dev = np.array(y_dev).reshape(1, -1)
     x_dev = x_dev / 255
     x_dev_flatten = x_dev.reshape(x_dev.shape[0], -1).T
 
-    # x shape (120000, 689) (parameters, num examples)
-    # y shape (1, 689)
+    # x shape: (parameters, num examples)
+    # y shape: (1, num examples)
     return x_dev_flatten, y_dev
