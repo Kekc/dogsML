@@ -4,12 +4,23 @@ import dogsml.utils
 import utils
 
 
-def neural_net_model(x_train, y_train, x_test, y_test, layer1_size=1, num_epochs=100, learning_rate=0.0001):
+def neural_net_model(
+        x_train,
+        y_train,
+        x_test,
+        y_test,
+        layer1_size=1,
+        num_epochs=100,
+        learning_rate=0.0001,
+):
     """
     Run neural net and find optimal values for parameters `w` and `b`
-    :param x_train: (ndarray) of shape (number of parameters, number of examples) Training data
-    :param y_train: (ndarray) of shape (1, number of examples) Training true values
-    :param x_test: (ndarray) of shape (number of parameters, number of examples) Test true values
+    :param x_train: (ndarray) of shape
+        (number of parameters, number of examples) Training data
+    :param y_train: (ndarray) of shape
+        (1, number of examples) Training true values
+    :param x_test: (ndarray) of shape
+        (number of parameters, number of examples) Test true values
     :param y_test: (ndarray) of shape (1, number of examples) Test data
     :param layer1_size: (int) Size of the neural net layer
     :param num_epochs: (int)
@@ -66,5 +77,5 @@ if __name__ == '__main__':
         y_test,
         layer1_size=4,
         num_epochs=401,
-        learning_rate=0.09
+        learning_rate=0.09,
     )

@@ -16,9 +16,12 @@ def neural_net_model(
 ):
     """
     Run neural net and find optimal values for parameters `w` and `b`
-    :param x_train: (ndarray) of shape (number of parameters, number of examples) Training data
-    :param y_train: (ndarray) of shape (1, number of examples) Training true values
-    :param x_test: (ndarray) of shape (number of parameters, number of examples) Test true values
+    :param x_train: (ndarray) of shape
+        (number of parameters, number of examples) Training data
+    :param y_train: (ndarray) of shape
+        (1, number of examples) Training true values
+    :param x_test: (ndarray) of shape
+        (number of parameters, number of examples) Test true values
     :param y_test: (ndarray) of shape (1, number of examples) Test data
     :param layer1_size: (int) Size of the neural net layer
     :param num_epochs: (int)
@@ -38,11 +41,19 @@ def neural_net_model(
 
     w1, b1, w2, b2 = utils.initialize_params(x_train, y_train, layer1_size)
 
-    x_train = tf.data.Dataset.from_tensor_slices(tf.transpose(x_train.astype("float32")))
-    y_train = tf.data.Dataset.from_tensor_slices(tf.transpose(y_train.astype("float32")))
+    x_train = tf.data.Dataset.from_tensor_slices(
+        tf.transpose(x_train.astype("float32"))
+    )
+    y_train = tf.data.Dataset.from_tensor_slices(
+        tf.transpose(y_train.astype("float32"))
+    )
 
-    x_test = tf.data.Dataset.from_tensor_slices(tf.transpose(x_test.astype("float32")))
-    y_test = tf.data.Dataset.from_tensor_slices(tf.transpose(y_test.astype("float32")))
+    x_test = tf.data.Dataset.from_tensor_slices(
+        tf.transpose(x_test.astype("float32"))
+    )
+    y_test = tf.data.Dataset.from_tensor_slices(
+        tf.transpose(y_test.astype("float32"))
+    )
 
     dataset = tf.data.Dataset.zip((x_train, y_train))
     test_dataset = tf.data.Dataset.zip((x_test, y_test))
@@ -58,8 +69,17 @@ def neural_net_model(
 
         for (minibatch_X, minibatch_Y) in minibatches:
             with tf.GradientTape() as tape:
-                a2 = utils.forward_step(tf.transpose(minibatch_X), w1, b1, w2, b2)
-                loss = tf.keras.losses.binary_crossentropy(tf.transpose(minibatch_Y), a2)
+                a2 = utils.forward_step(
+                    tf.transpose(minibatch_X),
+                    w1,
+                    b1,
+                    w2,
+                    b2,
+                )
+                loss = tf.keras.losses.binary_crossentropy(
+                    tf.transpose(minibatch_Y),
+                    a2
+                )
                 minibatch_cost = tf.reduce_mean(loss)
 
             train_accuracy.update_state(minibatch_Y, a2)
@@ -75,7 +95,13 @@ def neural_net_model(
             print("Train accuracy:", train_accuracy.result())
 
             for (minibatch_X, minibatch_Y) in test_minibatches:
-                a2 = utils.forward_step(tf.transpose(minibatch_X), w1, b1, w2, b2)
+                a2 = utils.forward_step(
+                    tf.transpose(minibatch_X),
+                    w1,
+                    b1,
+                    w2,
+                    b2,
+                )
                 test_accuracy.update_state(minibatch_Y, a2)
             print("Test_accuracy:", test_accuracy.result())
             test_accuracy.reset_states()

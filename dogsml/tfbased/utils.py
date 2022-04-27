@@ -22,8 +22,10 @@ def forward_step(x_set, w1, b1, w2, b2):
 def initialize_params(x_train, y_train, layer1_size):
     """
     Initialize neural net parameters for tensorflow usage
-    :param x_train: (ndarray) of shape (number of parameters, number of examples) Training data
-    :param y_train: (ndarray) of shape (1, number of examples) Training true values
+    :param x_train: (ndarray) of shape
+        (number of parameters, number of examples) Training data
+    :param y_train: (ndarray) of shape
+        (1, number of examples) Training true values
     :param layer1_size: (int)
     :return: (w1, b1, w2, b2)
         w1 : (tf.Tensor) of shape (layer1_size, number of x parameters)

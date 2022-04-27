@@ -11,7 +11,9 @@ __all__ = (
     "prepare_images",
 )
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../..")
+)
 DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
 IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
 DATASET_FOLDER = "{0}/dogs_dataset".format(DATA_ROOT)
@@ -85,7 +87,8 @@ def prepare_images(filename):
     y - true "label" vector
     :param filename: (str)
     :return: (x_dev_flatten, y_dev)
-        x_dev_flatten : (ndarray) of shape (number of parameters: width * height * channels, number of examples)
+        x_dev_flatten : (ndarray) of shape
+          (number of parameters: width * height * channels, number of examples)
         y_dev : (ndarray) of shape (1, number of examples)
 
     """
@@ -93,7 +96,7 @@ def prepare_images(filename):
     y_dev = []
     with open("{0}/{1}.csv".format(DATASET_FOLDER, filename), "r") as csvfile:
         reader = csv.reader(csvfile)
-        header = next(reader)
+        next(reader)
         for image_path, value in reader:
             image_path = os.path.join(PROJECT_ROOT, image_path)
             img_arr = cv2.imread(image_path)
@@ -112,7 +115,3 @@ def prepare_images(filename):
     # x shape (120000, 689) (parameters, num examples)
     # y shape (1, 689)
     return x_dev_flatten, y_dev
-
-
-
-

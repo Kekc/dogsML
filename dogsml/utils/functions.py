@@ -37,7 +37,8 @@ def get_cost(activation, true_values, examples_count):
     :param examples_count: (int)
     :return:
     """
-    logprobs = true_values * np.log(activation) + (1 - true_values) * np.log(1 - activation)
+    logprobs = (true_values * np.log(activation) +
+                (1 - true_values) * np.log(1 - activation))
     return -np.sum(logprobs) / examples_count
 
 
@@ -55,7 +56,8 @@ def activation_function(data, w, b):
 def get_accuracy(x_test, y_test, w, b):
     """
     Get accuracy for given parameters `w` and `b`
-    :param x_test: (ndarray) of shape (number of parameters, number of examples)
+    :param x_test: (ndarray) of shape
+        (number of parameters, number of examples)
     :param y_test: (ndarray) of shape (1, number of examples)
     :param w: (ndarray) of shape (number of x parameters, 1)
     :param b: (float)

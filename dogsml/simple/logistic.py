@@ -4,7 +4,13 @@ import matplotlib.pyplot as plt
 import dogsml.utils
 
 
-def logistic_regression(x_dev, y_dev, num_iterations=100, learning_rate=0.009, accuracy_plot=False):
+def logistic_regression(
+        x_dev,
+        y_dev,
+        num_iterations=100,
+        learning_rate=0.009,
+        accuracy_plot=False
+):
     """
     Run logistic regression and find optimal values for `w` and `b`
 
@@ -42,7 +48,8 @@ def logistic_regression(x_dev, y_dev, num_iterations=100, learning_rate=0.009, a
 
 def propagate_forward(data, true_values, w, b):
     """
-    Run one step of logistic regression, count derivatives for parameters `w` and `b`
+    Run one step of logistic regression,
+    count derivatives for parameters `w` and `b`
     Count cost and accuracy for the current step
 
     :param data: (ndarray) of shape (number of parameters, number of examples)
@@ -62,7 +69,11 @@ def propagate_forward(data, true_values, w, b):
     if np.equal(activation, true_values).all():
         cost = 0
     else:
-        cost = dogsml.utils.functions.get_cost(activation, true_values, examples_count)
+        cost = dogsml.utils.functions.get_cost(
+            activation,
+            true_values,
+            examples_count
+        )
 
     dw = (1 / examples_count) * np.dot(data, (activation - true_values).T)
     db = (1 / examples_count) * np.sum(activation - true_values)
@@ -82,6 +93,11 @@ def propagate_forward(data, true_values, w, b):
 if __name__ == '__main__':
     x_dev, y_dev = dogsml.utils.dataset.prepare_images("dev")
     x_test, y_test = dogsml.utils.dataset.prepare_images("test")
-    w, b = logistic_regression(x_dev, y_dev, num_iterations=600, learning_rate=0.1)
+    w, b = logistic_regression(
+        x_dev,
+        y_dev,
+        num_iterations=600,
+        learning_rate=0.1,
+    )
     accuracy_test = dogsml.utils.functions.get_accuracy(x_test, y_test, w, b)
     print("Accuracy on the test set: ", accuracy_test)

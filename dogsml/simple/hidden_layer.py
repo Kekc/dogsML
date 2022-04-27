@@ -90,7 +90,13 @@ def update_params(params, grads, learning_rate=0.1):
     }
 
 
-def neural_net_model(x_set, y_set, hidden_layer_size=4, num_iterations=600, learning_rate=0.1):
+def neural_net_model(
+        x_set,
+        y_set,
+        hidden_layer_size=4,
+        num_iterations=600,
+        learning_rate=0.1
+):
     """
     Neural net with one hidden layer
     :param x_dev: (ndarray) of shape (number of parameters, number of examples)
@@ -118,7 +124,11 @@ def neural_net_model(x_set, y_set, hidden_layer_size=4, num_iterations=600, lear
 
     for iteration in range(num_iterations):
         cache = propagate_forward(x_set, params)
-        cost = dogsml.utils.functions.get_cost(cache["a2"], y_set, examples_count)
+        cost = dogsml.utils.functions.get_cost(
+            cache["a2"],
+            y_set,
+            examples_count
+        )
         cost = float(np.squeeze(cost))
         if cost == 0:
             break
@@ -138,7 +148,13 @@ def neural_net_model(x_set, y_set, hidden_layer_size=4, num_iterations=600, lear
 if __name__ == '__main__':
     x_dev, y_dev = dogsml.utils.dataset.prepare_images("dev")
     x_test, y_test = dogsml.utils.dataset.prepare_images("test")
-    params = neural_net_model(x_dev, y_dev, hidden_layer_size=2, num_iterations=100, learning_rate=0.2)
+    params = neural_net_model(
+        x_dev,
+        y_dev,
+        hidden_layer_size=2,
+        num_iterations=100,
+        learning_rate=0.2
+    )
     cache = propagate_forward(x_test, params)
     predictions = np.where(cache["a2"] < 0.5, 0, 1)
     accuracy_test = 100 - np.mean(np.abs(predictions - y_test)) * 100
