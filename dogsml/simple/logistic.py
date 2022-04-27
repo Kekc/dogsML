@@ -8,14 +8,14 @@ def logistic_regression(x_dev, y_dev, num_iterations=100, learning_rate=0.009, a
     """
     Run logistic regression and find optimal values for `w` and `b`
 
-    :param accuracy_plot: bool
-    :param x_dev: ndarray of shape (number of parameters, number of examples)
-    :param y_dev: ndarray of shape (1, number of examples)
-    :param num_iterations: int
-    :param learning_rate: float
+    :param x_dev: (ndarray) of shape (number of parameters, number of examples)
+    :param y_dev: (ndarray) of shape (1, number of examples)
+    :param num_iterations: (int)
+    :param learning_rate: (float)
+    :param accuracy_plot: (bool)
     :return: (w, b)
-        w : ndarray of shape (number of x parameters, 1)
-        b : float
+        w : (ndarray) of shape (number of x parameters, 1)
+        b : (float)
     """
 
     accuracy_set = []
@@ -45,16 +45,16 @@ def propagate_forward(data, true_values, w, b):
     Run one step of logistic regression, count derivatives for parameters `w` and `b`
     Count cost and accuracy for the current step
 
-    :param data: ndarray of shape (number of parameters, number of examples)
-    :param true_values: ndarray of shape (1, number of examples)
-    :param w: ndarray of shape (number of x parameters, 1)
-    :param b: float
+    :param data: (ndarray) of shape (number of parameters, number of examples)
+    :param true_values: (ndarray) of shape (1, number of examples)
+    :param w: (ndarray) of shape (number of x parameters, 1)
+    :param b: (float)
     :return: (grads, cost, accuracy)
-        grads : dict(dw=dw, db=db)
-            dw : ndarray of shape (number of x parameters, 1)
-            db : float
-        cost : ndarray of shape ()
-        accuracy : float
+        grads : (dict(dw=dw, db=db))
+            dw : (ndarray) of shape (number of x parameters, 1)
+            db : (float)
+        cost : (ndarray) of shape ()
+        accuracy : (float)
     """
     examples_count = data.shape[1]
     activation = dogsml.utils.functions.activation_function(data, w, b)

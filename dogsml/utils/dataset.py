@@ -83,10 +83,10 @@ def prepare_images(filename):
     Parse csv file and prepare two numpy arrays:
     x - data
     y - true "label" vector
-    :param filename: str
+    :param filename: (str)
     :return: (x_dev_flatten, y_dev)
-        x_dev_flatten : ndarray of shape (number of parameters: width * height * channels, number of examples)
-        y_dev : ndarray of shape (1, number of examples)
+        x_dev_flatten : (ndarray) of shape (number of parameters: width * height * channels, number of examples)
+        y_dev : (ndarray) of shape (1, number of examples)
 
     """
     x_dev = []

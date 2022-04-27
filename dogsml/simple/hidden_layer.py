@@ -4,6 +4,18 @@ import dogsml.utils
 
 
 def propagate_forward(x_set, params):
+    """
+    :param x_set: (ndarray) of shape (number of parameters, number of examples)
+    :param params: (dict(w1=w1, b1=b1, w2=w2, b2=b2))
+        w1 : (ndarray) of shape (layer1_size, number of x parameters)
+        b1 : (ndarray) of shape (layer1_size, 1)
+        w2 : (ndarray) of shape (1, layer1_size)
+        b2 : (ndarray) of shape (1, 1)
+    :return: (dict(a1=a1, a2=a2))
+        a1 : (ndarray) of shape (layer1_size, number of examples)
+        a2 : (ndarray) of shape (1, number of examples)
+        Dictionary of activations for different layers
+    """
 
     z1 = np.dot(params["w1"], x_set) + params["b1"]
     # relu
@@ -20,6 +32,18 @@ def propagate_forward(x_set, params):
 
 
 def propagate_backward(x_set, y_set, cache, params):
+    """
+    :param x_set: (ndarray) of shape (number of parameters, number of examples)
+    :param y_set: (ndarray) of shape (1, number of examples)
+    :param cache: (dict(a1=a1, a2=a2))
+    :param params: (dict(w1=w1, b1=b1, w2=w2, b2=b2))
+    :return: (dict(dw1=dw1, db1=db1, dw2=dw2, db2=db2))
+        Dictionary of variables gradients
+        dw1 : (ndarray) of shape (layer1_size, number of x parameters)
+        db1 : (ndarray) of shape (layer1_size, 1)
+        dw2 : (ndarray) of shape (1, layer1_size)
+        db2 : (ndarray) of shape (1, 1)
+    """
     examples_count = y_set.shape[1]
 
     dz2 = cache["a2"] - y_set
@@ -46,6 +70,13 @@ def propagate_backward(x_set, y_set, cache, params):
 
 
 def update_params(params, grads, learning_rate=0.1):
+    """
+    Update neural net parameters with counted gradients
+    :param params: (dict(w1=w1, b1=b1, w2=w2, b2=b2))
+    :param grads: (dict(dw1=dw1, db1=db1, dw2=dw2, db2=db2))
+    :param learning_rate: (float)
+    :return: (dict(w1=w1, b1=b1, w2=w2, b2=b2))
+    """
     w1 = params["w1"] - learning_rate * grads["dw1"]
     w2 = params["w2"] - learning_rate * grads["dw2"]
     b1 = params["b1"] - learning_rate * grads["db1"]
@@ -61,13 +92,13 @@ def update_params(params, grads, learning_rate=0.1):
 
 def neural_net_model(x_set, y_set, hidden_layer_size=4, num_iterations=600, learning_rate=0.1):
     """
-
-    :param hidden_layer_size:
-    :param x_dev:
-    :param y_dev:
-    :param num_iterations:
-    :param learning_rate:
-    :return:
+    Neural net with one hidden layer
+    :param x_dev: (ndarray) of shape (number of parameters, number of examples)
+    :param y_dev: (ndarray) of shape (1, number of examples)
+    :param hidden_layer_size: (int)
+    :param num_iterations: (int)
+    :param learning_rate: (float)
+    :return: (dict(w1=w1, b1=b1, w2=w2, b2=b2))
     """
     input_layer_size = x_set.shape[0]
     output_layer_size = y_set.shape[0]
