@@ -9,6 +9,9 @@ __all__ = (
     "DATA_ROOT",
     "IMG_FOLDER",
     "DATASET_FOLDER",
+    "NATURAL_IMAGES_HDF5",
+    "NATURAL_IMAGES_HDF5_CONV",
+    "extract_image_data",
     "prepare_dataset",
     "prepare_images",
 )
@@ -19,6 +22,12 @@ PROJECT_ROOT = os.path.abspath(
 DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
 IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
 DATASET_FOLDER = "{0}/dogs_dataset".format(DATA_ROOT)
+NATURAL_IMAGES_HDF5 = "{0}/natural_images_conv.hdf5".format(
+    DATASET_FOLDER
+)
+NATURAL_IMAGES_HDF5_CONV = "{0}/natural_images_conv.hdf5".format(
+    DATASET_FOLDER
+)
 
 
 def prepare_dataset():
@@ -82,17 +91,17 @@ def prepare_dataset():
             writer.writerow([path, 0])
 
 
-def prepare_images(filename, width=64, height=64):
+def extract_image_data(filename, width=64, height=64):
     """
     Parse csv file and prepare two numpy arrays:
     x - data
     y - true "label" vector
     :param filename: (str)
-    :return: (x_dev_flatten, y_dev)
-        x_dev_flatten : (ndarray) of shape
-          (number of parameters: width * height * channels, number of examples)
-        y_dev : (ndarray) of shape (1, number of examples)
-
+    :param width: (int)
+    :param height: (int)
+    :return: (x_dev, y_dev)
+        x_dev : (ndarray) (num examples, width, height, channels)
+        y_dev : (ndarray) (num examples, 1)
     """
     x_dev = []
     y_dev = []
@@ -106,14 +115,29 @@ def prepare_images(filename, width=64, height=64):
             x_dev.append(img_arr)
             y_dev.append(int(value))
     x_dev = np.asarray(x_dev)
-
-    # x shape: (num examples, width, height, channels)
-    # y shape: (num examples)
-
-    y_dev = np.array(y_dev).reshape(1, -1)
     x_dev = x_dev / 255
+    y_dev = np.array(y_dev).reshape(-1, 1)
+    return x_dev, y_dev
+
+
+def prepare_images(filename, width=64, height=64):
+    """
+    Flatten and reshape image data
+    :param filename: (str)
+    :param width: (int)
+    :param height: (int)
+    :return: (x_dev_flatten, y_dev)
+        x_dev_flatten : (ndarray) of shape
+          (number of parameters: width * height * channels, number of examples)
+        y_dev : (ndarray) of shape (1, number of examples)
+
+    """
+    x_dev, y_dev = extract_image_data(filename, width, height)
+    # x shape: (num examples, width, height, channels)
+    # y shape: (num examples, 1)
+
     x_dev_flatten = x_dev.reshape(x_dev.shape[0], -1).T
 
     # x shape: (parameters, num examples)
     # y shape: (1, num examples)
-    return x_dev_flatten, y_dev
+    return x_dev_flatten, y_dev.T
