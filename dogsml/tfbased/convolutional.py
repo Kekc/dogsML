@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.keras.layers as tfl
 
+import dogsml.settings
 import dogsml.utils
 
 
@@ -124,7 +125,7 @@ def run_model(num_epochs=100, batch_size=32):
     :param batch_size: (int)
     :return: (None)
     """
-    dataset = h5py.File(dogsml.utils.dataset.NATURAL_IMAGES_HDF5_CONV, "r")
+    dataset = h5py.File(dogsml.settings.NATURAL_IMAGES_HDF5_CONV, "r")
     x_train = dataset["x_train"]
     y_train = dataset["y_train"]
     x_test = dataset["x_test"]
@@ -149,7 +150,7 @@ def run_model(num_epochs=100, batch_size=32):
     )
 
     conv_model.save("{0}/conv_model_{1}".format(
-        dogsml.utils.dataset.COMPILED_MODELS_PATH,
+        dogsml.settings.COMPILED_MODELS_PATH,
         num_epochs)
     )
 

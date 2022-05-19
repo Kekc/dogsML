@@ -31,6 +31,9 @@ setup(
         "h5py",
         "opencv-python",
         "tensorflow",
+        "python-telegram-bot",
+        "environs",
+        "requests",
     ],
     classifiers=[
         "Development Status :: 4 - Beta",

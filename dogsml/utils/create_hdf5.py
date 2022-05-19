@@ -1,5 +1,6 @@
 import h5py
 
+import dogsml.settings
 import dataset
 
 
@@ -29,9 +30,9 @@ def create_natural_images_file(convolutional=False):
         y_test = y_test.T
         y_train = y_train.T
 
-    filename = dataset.NATURAL_IMAGES_HDF5
+    filename = dogsml.settings.NATURAL_IMAGES_HDF5
     if convolutional:
-        filename = dataset.NATURAL_IMAGES_HDF5_CONV
+        filename = dogsml.settings.NATURAL_IMAGES_HDF5_CONV
     with h5py.File(filename, "w") as hf:
         hf.create_dataset(
             "x_dev",

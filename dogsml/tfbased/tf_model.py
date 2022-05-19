@@ -3,6 +3,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.keras.layers as tfl
 
+import dogsml.settings
 import dogsml.utils
 
 
@@ -60,7 +61,7 @@ def run_model():
     :return: (None)
     """
     dataset = h5py.File(
-        "{0}/natural_images.hdf5".format(dogsml.utils.dataset.DATASET_FOLDER),
+        "{0}/natural_images.hdf5".format(dogsml.settings.DATASET_FOLDER),
         "r",
     )
     x_dev = dataset["x_dev"]

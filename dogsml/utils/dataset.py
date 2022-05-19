@@ -3,37 +3,15 @@ import os
 import csv
 import cv2
 
+import dogsml.settings
+
 
 __all__ = (
-    "PROJECT_ROOT",
-    "DATA_ROOT",
-    "IMG_FOLDER",
-    "DATASET_FOLDER",
-    "NATURAL_IMAGES_HDF5",
-    "NATURAL_IMAGES_HDF5_CONV",
-    "COMPILED_MODELS_PATH",
     "extract_image_data",
     "extract_image_data_from_path",
     "prepare_dataset",
     "prepare_images",
 )
-
-PROJECT_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../..")
-)
-SRC_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..")
-)
-DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
-IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
-DATASET_FOLDER = "{0}/dogs_dataset".format(DATA_ROOT)
-NATURAL_IMAGES_HDF5 = "{0}/natural_images_conv.hdf5".format(
-    DATASET_FOLDER
-)
-NATURAL_IMAGES_HDF5_CONV = "{0}/natural_images_conv.hdf5".format(
-    DATASET_FOLDER
-)
-COMPILED_MODELS_PATH = os.path.join(SRC_ROOT, "compiled_models")
 
 
 def prepare_dataset():
@@ -52,12 +30,18 @@ def prepare_dataset():
     all_images_count = 0
     dogs_count = 0
     non_dogs_count = 0
-    for directory in os.listdir(IMG_FOLDER):
+    for directory in os.listdir(dogsml.settings.IMG_FOLDER):
         if directory.startswith("."):
             continue
         is_dog = directory == "dog"
-        for filename in os.listdir(os.path.join(IMG_FOLDER, directory)):
-            image_path = os.path.join(IMG_FOLDER, directory, filename)
+        for filename in os.listdir(
+            os.path.join(dogsml.settings.IMG_FOLDER, directory)
+        ):
+            image_path = os.path.join(
+                dogsml.settings.IMG_FOLDER,
+                directory,
+                filename
+            )
             if is_dog:
                 dog_paths.append(image_path)
                 dogs_count += 1
@@ -72,7 +56,9 @@ def prepare_dataset():
     np.random.shuffle(dog_paths)
     np.random.shuffle(non_dog_paths)
 
-    with open("{0}/dev.csv".format(DATASET_FOLDER), "w") as f:
+    with open("{0}/dev.csv".format(
+        dogsml.settings.DATASET_FOLDER), "w"
+    ) as f:
         writer = csv.writer(f)
         writer.writerow(["PATH", "IS_DOG"])
         for path in dog_paths[:dogs_10pc]:
@@ -80,7 +66,7 @@ def prepare_dataset():
         for path in non_dog_paths[:non_dogs_10pc]:
             writer.writerow([path, 0])
 
-    with open("{0}/test.csv".format(DATASET_FOLDER), "w") as f:
+    with open("{0}/test.csv".format(dogsml.settings.DATASET_FOLDER), "w") as f:
         writer = csv.writer(f)
         writer.writerow(["PATH", "IS_DOG"])
         for path in dog_paths[dogs_10pc: 2 * dogs_10pc]:
@@ -88,7 +74,9 @@ def prepare_dataset():
         for path in non_dog_paths[non_dogs_10pc: 2 * non_dogs_10pc]:
             writer.writerow([path, 0])
 
-    with open("{0}/train.csv".format(DATASET_FOLDER), "w") as f:
+    with open("{0}/train.csv".format(
+        dogsml.settings.DATASET_FOLDER), "w"
+    ) as f:
         writer = csv.writer(f)
         writer.writerow(["PATH", "IS_DOG"])
         for path in dog_paths[2 * dogs_10pc:]:
@@ -111,11 +99,13 @@ def extract_image_data(filename, width=64, height=64):
     """
     x_dev = []
     y_dev = []
-    with open("{0}/{1}.csv".format(DATASET_FOLDER, filename), "r") as csvfile:
+    with open("{0}/{1}.csv".format(
+        dogsml.settings.DATASET_FOLDER, filename), "r"
+    ) as csvfile:
         reader = csv.reader(csvfile)
         next(reader)
         for image_path, value in reader:
-            image_path = os.path.join(PROJECT_ROOT, image_path)
+            image_path = os.path.join(dogsml.settings.PROJECT_ROOT, image_path)
             img_arr = cv2.imread(image_path)
             img_arr = cv2.resize(img_arr, (width, height))
             x_dev.append(img_arr)
