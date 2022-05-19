@@ -41,12 +41,13 @@ def neural_net_model(input_shape):
     return conv_model
 
 
-def visualize(history, num_epochs, num_examples):
+def visualize(history, num_epochs, train_examples, test_examples):
     """
     Visualize training process of the neural net
     :param history: (tf.History) Result of tf.Model.fit()
     :param num_epochs: (int)
-    :param num_examples: (int)
+    :param train_examples: (int)
+    :param test_examples: (int)
     :return: (None)
     """
     fig, ax = plt.subplots()
@@ -76,10 +77,10 @@ def visualize(history, num_epochs, num_examples):
     plt.show()
 
     false_negatives_train = np.array(history.history["false_negatives"])
-    false_negatives_train = 100 * false_negatives_train / num_examples
+    false_negatives_train = 100 * false_negatives_train / train_examples
 
     false_negatives_test = np.array(history.history["val_false_negatives"])
-    false_negatives_test = 100 * false_negatives_test / num_examples
+    false_negatives_test = 100 * false_negatives_test / test_examples
     fig, ax = plt.subplots()
     ax.plot(
         false_negatives_train,
@@ -96,10 +97,10 @@ def visualize(history, num_epochs, num_examples):
     plt.show()
 
     false_positives_train = np.array(history.history["false_positives"])
-    false_positives_train = 100 * false_positives_train / num_examples
+    false_positives_train = 100 * false_positives_train / train_examples
 
     false_positives_test = np.array(history.history["val_false_positives"])
-    false_positives_test = 100 * false_positives_test / num_examples
+    false_positives_test = 100 * false_positives_test / test_examples
     fig, ax = plt.subplots()
     ax.plot(
         false_positives_train,
@@ -124,14 +125,15 @@ def run_model(num_epochs=100, batch_size=32):
     :return: (None)
     """
     dataset = h5py.File(dogsml.utils.dataset.NATURAL_IMAGES_HDF5_CONV, "r")
-    x_train = dataset["x_dev"]
-    y_train = dataset["y_dev"]
+    x_train = dataset["x_train"]
+    y_train = dataset["y_train"]
     x_test = dataset["x_test"]
     y_test = dataset["y_test"]
 
     conv_model = neural_net_model(x_train.shape[1:])
 
-    num_examples = x_train.shape[0]
+    train_examples = x_train.shape[0]
+    test_examples = x_test.shape[0]
 
     train_dataset = tf.data.Dataset.from_tensor_slices(
         (x_train, y_train)
@@ -146,8 +148,13 @@ def run_model(num_epochs=100, batch_size=32):
         validation_data=test_dataset,
     )
 
-    visualize(history, num_epochs, num_examples)
+    conv_model.save("{0}/conv_model_{1}".format(
+        dogsml.utils.dataset.COMPILED_MODELS_PATH,
+        num_epochs)
+    )
+
+    visualize(history, num_epochs, train_examples, test_examples)
 
 
 if __name__ == '__main__':
-    run_model(num_epochs=10, batch_size=350)
+    run_model(num_epochs=500, batch_size=32)

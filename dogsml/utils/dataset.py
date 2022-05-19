@@ -11,13 +11,18 @@ __all__ = (
     "DATASET_FOLDER",
     "NATURAL_IMAGES_HDF5",
     "NATURAL_IMAGES_HDF5_CONV",
+    "COMPILED_MODELS_PATH",
     "extract_image_data",
+    "extract_image_data_from_path",
     "prepare_dataset",
     "prepare_images",
 )
 
 PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../..")
+)
+SRC_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..")
 )
 DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
 IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
@@ -28,6 +33,7 @@ NATURAL_IMAGES_HDF5 = "{0}/natural_images_conv.hdf5".format(
 NATURAL_IMAGES_HDF5_CONV = "{0}/natural_images_conv.hdf5".format(
     DATASET_FOLDER
 )
+COMPILED_MODELS_PATH = os.path.join(SRC_ROOT, "compiled_models")
 
 
 def prepare_dataset():
@@ -118,6 +124,21 @@ def extract_image_data(filename, width=64, height=64):
     x_dev = x_dev / 255
     y_dev = np.array(y_dev).reshape(-1, 1)
     return x_dev, y_dev
+
+
+def extract_image_data_from_path(image_path, width=64, height=64):
+    """
+    Return numpy array with image data
+    :param image_path: (str)
+    :param width: (int)
+    :param height: (int)
+    :return: (ndarray)
+    """
+    img_arr = cv2.imread(image_path)
+    img_arr = cv2.resize(img_arr, (width, height))
+    img_arr = np.asarray(img_arr)
+    img_arr = img_arr / 255
+    return img_arr
 
 
 def prepare_images(filename, width=64, height=64):
