@@ -9,9 +9,10 @@ import dogsml.tfbased.utils
 
 
 __all__ = (
-    "predict",
+    "predict_folder",
     "predict_from_url",
     "interpret_predicted_dog_values",
+    "interpret_categorical_results",
 )
 
 

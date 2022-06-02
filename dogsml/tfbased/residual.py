@@ -273,7 +273,7 @@ def run_model(
         classes_count
     )
 
-    history = residual_model.fit(
+    residual_model.fit(
         train_ds,
         epochs=num_epochs,
         validation_data=validation_ds,
@@ -338,7 +338,7 @@ def run_model_from_h5(
         classes_count
     )
 
-    history = residual_model.fit(
+    residual_model.fit(
         train_dataset,
         epochs=num_epochs,
         validation_data=test_dataset,

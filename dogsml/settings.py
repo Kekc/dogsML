@@ -23,6 +23,10 @@ SRC_ROOT = os.path.abspath(
 PROJECT_ROOT = os.path.abspath(
     os.path.join(SRC_ROOT, "..")
 )
+TEST_ROOT = os.path.abspath(
+    os.path.join(SRC_ROOT, "tests")
+)
+
 DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
 IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
 DATASET_FOLDER = "{0}/dogs_dataset".format(DATA_ROOT)
