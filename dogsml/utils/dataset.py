@@ -7,11 +7,23 @@ import dogsml.settings
 
 
 __all__ = (
+    "NATURAL_IMAGES_CLASS_NAMES",
     "extract_image_data",
     "extract_image_data_from_path",
     "prepare_dataset",
     "prepare_images",
 )
+
+NATURAL_IMAGES_CLASS_NAMES = [
+    "airplane",
+    "car",
+    "cat",
+    "dog",
+    "flower",
+    "fruit",
+    "motorbike",
+    "person",
+]
 
 
 def prepare_dataset():
