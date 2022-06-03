@@ -128,18 +128,20 @@ def extract_image_data(filename, width=64, height=64):
     return x_dev, y_dev
 
 
-def extract_image_data_from_path(image_path, width=64, height=64):
+def extract_image_data_from_path(image_path, width=64, height=64, scale=True):
     """
     Return numpy array with image data
     :param image_path: (str)
     :param width: (int)
     :param height: (int)
+    :param scale: (bool) set True to scale pixel values to [0;1]
     :return: (ndarray)
     """
     img_arr = cv2.imread(image_path)
     img_arr = cv2.resize(img_arr, (width, height))
     img_arr = np.asarray(img_arr)
-    img_arr = img_arr / 255
+    if scale:
+        img_arr = img_arr / 255
     return img_arr
 
 

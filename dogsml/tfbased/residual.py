@@ -241,7 +241,7 @@ def run_model(
     train_ds = tf.keras.utils.image_dataset_from_directory(
         data_dir,
         label_mode="categorical",
-        class_names=dogsml.utils.NATURAL_IMAGES_CLASS_NAMES,
+        class_names=dogsml.utils.dataset.NATURAL_IMAGES_CLASS_NAMES,
         validation_split=0.2,
         subset="training",
         seed=123,
@@ -251,7 +251,7 @@ def run_model(
     validation_ds = tf.keras.utils.image_dataset_from_directory(
         data_dir,
         label_mode="categorical",
-        class_names=dogsml.utils.NATURAL_IMAGES_CLASS_NAMES,
+        class_names=dogsml.utils.dataset.NATURAL_IMAGES_CLASS_NAMES,
         validation_split=0.2,
         subset="validation",
         seed=123,

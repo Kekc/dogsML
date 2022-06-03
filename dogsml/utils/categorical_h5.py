@@ -8,7 +8,7 @@ import dogsml.utils
 from dogsml.utils.dataset import NATURAL_IMAGES_CLASS_NAMES
 
 
-def create_categorical_hdf5(image_folder):
+def create_categorical_hdf5(image_folder, width=64, height=64):
     """
     Create h5 file with categorical data
     image folder structure:
@@ -20,6 +20,8 @@ def create_categorical_hdf5(image_folder):
     x_data: shape (num examples, width, height, channels)
     y_data: one-hot representation, shape(num examples, num classes)
     :param image_folder: (str)
+    :param width: (int)
+    :param height: (int)
     :return: (None)
     """
     x_data = []
@@ -35,7 +37,9 @@ def create_categorical_hdf5(image_folder):
         ):
             image_path = os.path.join(image_folder, category_name, filename)
             image_data = dogsml.utils.dataset.extract_image_data_from_path(
-                image_path
+                image_path,
+                width=width,
+                height=height,
             )
             image_data = np.array(image_data)
             x_data.append(image_data)
@@ -47,7 +51,7 @@ def create_categorical_hdf5(image_folder):
     y_data = np.array(y_data)
     h5_filename = os.path.join(
         dogsml.settings.DATA_ROOT,
-        "{0}.hdf5".format(image_folder),
+        "{0}_{1}_{2}.hdf5".format(image_folder, width, height),
     )
 
     with h5py.File(h5_filename, "w") as hf:
@@ -69,5 +73,7 @@ def create_categorical_hdf5(image_folder):
 
 if __name__ == '__main__':
     create_categorical_hdf5(
-        os.path.join(dogsml.settings.DATA_ROOT, "natural_images")
+        os.path.join(dogsml.settings.DATA_ROOT, "natural_images"),
+        160,
+        160,
     )
