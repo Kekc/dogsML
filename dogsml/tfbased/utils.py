@@ -50,6 +50,7 @@ def read_tensor_from_image_url(
     input_height=64,
     input_width=64,
     input_std=255,
+    scale=True,
 ):
     """
     Download image from url and prepare a tf.Tensor
@@ -57,6 +58,7 @@ def read_tensor_from_image_url(
     :param input_height: (int)
     :param input_width: (height)
     :param input_std: (int) - max value of the single channel
+    :param scale: (bool) - Set True to normalize values to interval [0; 1]
     :return: (tf.Tensor: shape=(1, 64, 64, 3), dtype=float32)
     """
     image_reader = tf.image.decode_jpeg(
@@ -64,6 +66,6 @@ def read_tensor_from_image_url(
     float_caster = tf.cast(image_reader, tf.float32)
     dims_expander = tf.expand_dims(float_caster, 0)
     resized = tf.image.resize(dims_expander, [input_height, input_width])
-    normalized = tf.divide(resized, [input_std])
-
-    return normalized
+    if scale:
+        return tf.divide(resized, [input_std])
+    return resized
