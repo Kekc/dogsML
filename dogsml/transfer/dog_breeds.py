@@ -70,8 +70,22 @@ def run_model(
     )
 
     data_augmentation = tf.keras.Sequential([
-        tfl.RandomFlip("horizontal"),
-        tfl.RandomRotation(0.2),
+        tfl.RandomFlip(),
+        tfl.RandomRotation(0.4),
+        tfl.RandomBrightness(factor=0.2),
+        tfl.RandomContrast(factor=0.2),
+        tfl.RandomHeight(factor=0.3),
+        tfl.RandomWidth(factor=0.3),
+        tfl.RandomTranslation(
+            height_factor=0.3,
+            width_factor=0.3,
+            fill_mode="nearest",
+        ),
+        tfl.RandomZoom(
+            height_factor=0.3,
+            width_factor=0.3,
+            fill_mode="nearest",
+        ),
     ])
 
     base_model.trainable = False
