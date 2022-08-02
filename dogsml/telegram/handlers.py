@@ -1,3 +1,4 @@
+import logging
 import telegram
 import telegram.ext
 import dogsml.tfbased.predict
@@ -18,9 +19,10 @@ def text_function(
     update: telegram.Update,
     context: telegram.ext.CallbackContext
 ):
-    context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text="Send picture of a dog"
+    logging.info(
+        "Text msg - Author: %s, Message: %s",
+        update.effective_user.username,
+        update.effective_message.text,
     )
 
 
@@ -30,8 +32,8 @@ def help_function(
 ):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=("This is a Telegram bot for dog's breed classification."
-              "Send a picture of a dog and it will return three most"
+        text=("This is a Telegram bot for dog's breed classification. "
+              "Send a picture of a dog and it will return three most "
               "possible breeds.")
     )
 
@@ -42,6 +44,11 @@ def image_function(
 ):
     image_id = update["message"]["photo"][-1]["file_id"]
     image_file = context.bot.get_file(image_id)
+    logging.info(
+        "Image msg - Author: %s, Message: %s",
+        update.effective_user.username,
+        image_file.file_path,
+    )
     dog_breed_model = context.bot_data.get("dog_breed_model")
     if not dog_breed_model:
         dog_breed_model = dogsml.tfbased.predict.load_model(
@@ -71,4 +78,5 @@ def image_function(
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=message,
+        reply_to_message_id=update.effective_message.message_id,
     )

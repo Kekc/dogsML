@@ -11,11 +11,6 @@ import handlers
 updater = telegram.ext.Updater(token=dogsml.settings.TELEGRAM_BOT_TOKEN)
 dispatcher = updater.dispatcher
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
-
 
 start_handler = telegram.ext.CommandHandler(
     "start",
@@ -42,6 +37,11 @@ dispatcher.add_handler(image_handler)
 
 
 def run_bot():
+    logging.basicConfig(
+        filename="example.log",
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO
+    )
     updater.start_polling()
 
 
