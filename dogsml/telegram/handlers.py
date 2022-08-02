@@ -14,6 +14,28 @@ def start(
     )
 
 
+def text_function(
+    update: telegram.Update,
+    context: telegram.ext.CallbackContext
+):
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="Send picture of a dog"
+    )
+
+
+def help_function(
+    update: telegram.Update,
+    context: telegram.ext.CallbackContext
+):
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=("This is a Telegram bot for dog's breed classification."
+              "Send a picture of a dog and it will return three most"
+              "possible breeds.")
+    )
+
+
 def image_function(
     update: telegram.Update,
     context: telegram.ext.CallbackContext
@@ -22,7 +44,9 @@ def image_function(
     image_file = context.bot.get_file(image_id)
     dog_breed_model = context.bot_data.get("dog_breed_model")
     if not dog_breed_model:
-        dog_breed_model = dogsml.tfbased.predict.load_model("dog_breeds_5.h5")
+        dog_breed_model = dogsml.tfbased.predict.load_model(
+            "dog_breed_colab.h5"
+        )
         context.bot_data["dog_breed_model"] = dog_breed_model
 
     p_value = dogsml.tfbased.predict.predict_from_url(
@@ -37,20 +61,14 @@ def image_function(
         3,
     )
     message = ""
-    for label, value in probabilities.items():
+    sorted_probabilities = sorted(
+        ((v, k) for k, v in probabilities.items()),
+        reverse=True
+    )
+    for value, label in sorted_probabilities:
         printed_value = format(value * 100, ".2f")
         message += "{0} --- {1}%\n".format(label, printed_value)
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=message,
-    )
-
-
-def unknown(
-    update: telegram.Update,
-    context: telegram.ext.CallbackContext
-):
-    context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text="Unknown command."
     )

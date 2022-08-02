@@ -21,18 +21,24 @@ start_handler = telegram.ext.CommandHandler(
     "start",
     handlers.start,
 )
+help_handler = telegram.ext.CommandHandler(
+    "help",
+    handlers.help_function,
+)
+
+text_handler = telegram.ext.MessageHandler(
+    telegram.ext.Filters.text,
+    handlers.text_function,
+)
 image_handler = telegram.ext.MessageHandler(
     ~telegram.ext.Filters.command,
     handlers.image_function,
 )
-unknown_handler = telegram.ext.MessageHandler(
-    telegram.ext.Filters.command,
-    handlers.unknown,
-)
 
 dispatcher.add_handler(start_handler)
+dispatcher.add_handler(help_handler)
+dispatcher.add_handler(text_handler)
 dispatcher.add_handler(image_handler)
-dispatcher.add_handler(unknown_handler)
 
 
 def run_bot():

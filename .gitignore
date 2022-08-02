@@ -131,3 +131,7 @@ dmypy.json
 
 # Dataset related files
 data
+
+# AWS
+.aws-sam
+aws_help.txt
