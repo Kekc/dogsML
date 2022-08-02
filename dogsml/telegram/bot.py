@@ -1,4 +1,5 @@
 import logging
+import os
 import telegram
 import telegram.ext
 
@@ -37,8 +38,11 @@ dispatcher.add_handler(image_handler)
 
 
 def run_bot():
+    filename = os.path.join(
+        dogsml.settings.LOG_ROOT, "example.log"
+    )
     logging.basicConfig(
-        filename="example.log",
+        filename=filename,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         level=logging.INFO
     )

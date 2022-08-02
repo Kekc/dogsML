@@ -26,6 +26,9 @@ PROJECT_ROOT = os.path.abspath(
 TEST_ROOT = os.path.abspath(
     os.path.join(SRC_ROOT, "tests")
 )
+LOG_ROOT = os.path.abspath(
+    os.path.join(SRC_ROOT, "logs")
+)
 
 DATA_ROOT = os.path.join(PROJECT_ROOT, "data")
 IMG_FOLDER = "{0}/natural_images".format(DATA_ROOT)
