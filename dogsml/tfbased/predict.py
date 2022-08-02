@@ -34,7 +34,7 @@ def load_model(model_name):
     return tf_model
 
 
-def predict_folder(image_folder, tf_model, img_width, img_height):
+def predict_folder(image_folder, tf_model, img_width, img_height, scale=True):
     """
     Run model on the image folder.
     Return numpy array with probabilities (0 < p < 1)
@@ -42,6 +42,7 @@ def predict_folder(image_folder, tf_model, img_width, img_height):
     :param tf_model: (tf.Model)
     :param img_width: (int)
     :param img_height: (int)
+    :param scale: (bool) - Set True to normalize values to interval [0; 1]
     :return: (ndarray)
     """
     image_data = []
@@ -52,6 +53,7 @@ def predict_folder(image_folder, tf_model, img_width, img_height):
                 image_path,
                 width=img_width,
                 height=img_height,
+                scale=scale,
             )
         )
     image_data = np.array(image_data)
