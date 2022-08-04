@@ -21,7 +21,7 @@ def text_function(
 ):
     logging.info(
         "Text msg - Author: %s, Message: %s",
-        update.effective_user.username,
+        update.effective_user,
         update.effective_message.text,
     )
 
@@ -46,7 +46,7 @@ def image_function(
     image_file = context.bot.get_file(image_id)
     logging.info(
         "Image msg - Author: %s, Message: %s",
-        update.effective_user.username,
+        update.effective_user,
         image_file.file_path,
     )
     dog_breed_model = context.bot_data.get("dog_breed_model")
